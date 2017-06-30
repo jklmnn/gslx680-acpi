@@ -150,6 +150,7 @@ struct gsl_ts_packet_touch {
 
 static int gsl_ts_init(struct gsl_ts_data *ts, const struct firmware *fw)
 {
+        printk("gsl: %s\n", __func__);
 	struct gsl_ts_fw_header *header;
 	u32 magic;
 	u16 version;
@@ -240,6 +241,7 @@ static int gsl_ts_read(struct i2c_client *client, u8 reg, u8 *pdata, unsigned in
 
 static int gsl_ts_startup_chip(struct i2c_client *client)
 {
+        printk("gsl: %s\n", __func__);
 	int rc;
 	u8 tmp = 0x00;
 
@@ -252,6 +254,7 @@ static int gsl_ts_startup_chip(struct i2c_client *client)
 
 static int gsl_ts_reset_chip(struct i2c_client *client)
 {
+        printk("gsl: %s\n", __func__);
 	int rc;
 	u8 arg[4] = { 0x00, 0x00, 0x00, 0x00 };
 
@@ -286,6 +289,7 @@ static int gsl_ts_reset_chip(struct i2c_client *client)
 
 static int gsl_ts_write_fw(struct gsl_ts_data *ts, const struct firmware *fw)
 {
+        printk("gsl: %s\n", __func__);
 	int rc = 0;
 	struct i2c_client *client = ts->client;
 	const struct gsl_ts_fw_header *header;
@@ -327,6 +331,7 @@ static int gsl_ts_write_fw(struct gsl_ts_data *ts, const struct firmware *fw)
 
 static void gsl_ts_mt_event(struct gsl_ts_data *ts, u8 *buf)
 {
+        printk("gsl: %s\n", __func__);
 	int rc;
 	struct input_dev *input = ts->input;
 	struct device *dev = &ts->client->dev;
@@ -402,6 +407,7 @@ static void gsl_ts_mt_event(struct gsl_ts_data *ts, u8 *buf)
 
 static irqreturn_t gsl_ts_irq(int irq, void *arg)
 {
+        printk("gsl: %s\n", __func__);
 	int rc;
 	struct gsl_ts_data *ts = (struct gsl_ts_data *) arg;
 	struct i2c_client *client = ts->client;
@@ -471,6 +477,7 @@ static irqreturn_t gsl_ts_irq(int irq, void *arg)
 
 static void gsl_ts_power(struct i2c_client *client, bool turnoff)
 {
+        printk("gsl: %s\n", __func__);
 	struct gsl_ts_data *data = i2c_get_clientdata(client);
 #ifdef CONFIG_ACPI
 	int error;
@@ -489,10 +496,12 @@ static void gsl_ts_power(struct i2c_client *client, bool turnoff)
 		}
 		usleep_range(20000, 50000);
 	}
+        printk("GSL %s power\n", turnoff ? "disable" : "enable");
 }
 
 static int gsl_ts_probe(struct i2c_client *client, const struct i2c_device_id *id)
 {
+        printk("gsl: %s\n", __func__);
 	struct gsl_ts_data *ts;
 	const struct firmware *fw = NULL;
 	unsigned long irqflags;
@@ -664,6 +673,7 @@ release:
 }
 
 int gsl_ts_remove(struct i2c_client *client) {
+        printk("gsl: %s\n", __func__);
 	/* Power the device off */
 	gsl_ts_power(client, true);
 	return 0;
@@ -671,6 +681,7 @@ int gsl_ts_remove(struct i2c_client *client) {
 
 static int __maybe_unused gsl_ts_suspend(struct device *dev)
 {
+        printk("gsl: %s\n", __func__);
 	struct i2c_client *client = to_i2c_client(dev);
 	struct gsl_ts_data *ts = i2c_get_clientdata(client);
 
@@ -694,6 +705,7 @@ static int __maybe_unused gsl_ts_suspend(struct device *dev)
 
 static int __maybe_unused gsl_ts_resume(struct device *dev)
 {
+        printk("gsl: %s\n", __func__);
 	struct i2c_client *client = to_i2c_client(dev);
 	struct gsl_ts_data *ts = i2c_get_clientdata(client);
 
