@@ -614,6 +614,7 @@ static int gsl_ts_probe(struct i2c_client *client, const struct i2c_device_id *i
 	gsl_ts_power(client, false);
 
 	/* Execute the controller startup sequence */
+        /*
 	error = gsl_ts_reset_chip(client);
 	if (error < 0) {
 		dev_err(&client->dev, "%s: chip reset failed\n", __func__);
@@ -629,7 +630,11 @@ static int gsl_ts_probe(struct i2c_client *client, const struct i2c_device_id *i
 		dev_err(&client->dev, "%s: chip startup failed\n", __func__);
 		goto release;
 	}
-
+        */
+        u8 data[10];
+        printk("gslx test read\n");
+        gsl_ts_read(client, GSL_STATUS_REG, data, sizeof(data));
+        printk("gslx test read finished\n");
 	/*
 	 * Systems using device tree should set up interrupt via DTS,
 	 * the rest will use the default falling edge interrupts.
